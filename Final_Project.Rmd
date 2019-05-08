@@ -1,10 +1,12 @@
 ---
-title: "MA677_Final_Report"
+title: "MA677_Final_Project"
 author: "Chaoqun Yin"
 date: "5/7/2019"
 output:
   word_document: default
   pdf_document: default
+  fig_width: 6 
+  fig_height: 3
 ---
 
 ```{r setup, include=FALSE}
@@ -14,10 +16,12 @@ pacman::p_load(tidyverse,stringr,gridExtra,kableExtra,ggpubr,pwr,fitdistrplus,kn
 
 # 1 Statistics and the Law
 
-### Question description: ACORN made a statstical arguement that the diﬀerence between the rates of mortgage application refusals of wihte applicants and minority applicatns constitued evidence of discrimination. Use ACORN’s data and create the arguements that (1) the data are suﬃcient evidence of discrimination to warrant corrective action and (2) the data are not suﬃcient.
+#### Question description: ACORN made a statstical arguement that the diﬀerence between the rates of mortgage application refusals of wihte applicants and minority applicatns constitued evidence of discrimination. Use ACORN’s data and create the arguements that (1) the data are suﬃcient evidence of discrimination to warrant corrective action and (2) the data are not suﬃcient.
 
 This question is equivalent to a test and a power analysis: 
-* H0: The refusal rate of white applicants equals the refusal rate of minority applicants. 
+
+* H0: The refusal rate of white applicants equals the refusal rate of minority applicants.
+
 * H1: The refusal rate of white applicants is higher than the refusal rate of minority applicants.
 
 ```{r}
@@ -71,11 +75,14 @@ Because of effect size of 1.98, an acceptable level of 0.8 requires more than 5 
 
 # 2 Comparing Suppliers
 
-### Question description: Acme Student Products sources ornithopters from high schools where students make orithopters as projects in a kinetics sculptor class. Not all of the ornithopers ﬂy. Not all of them look good enough. Revenue aside, which of the three schools produces the higher quality ornithopters, or are do they all produce about the same quality?
+#### Question description: Acme Student Products sources ornithopters from high schools where students make orithopters as projects in a kinetics sculptor class. Not all of the ornithopers ﬂy. Not all of them look good enough. Revenue aside, which of the three schools produces the higher quality ornithopters, or are do they all produce about the same quality?
 
 This question is equivalent to this test below:
+
 * H0: The three schools produce the same quality. 
+
 * H1: The three shcools produce different level of quality.
+
 ```{r}
 data_qua <- matrix(c(12,23,89,8,12,62,21,30,119),ncol=3,nrow = 3,byrow=TRUE)
 colnames(data_qua) <- c("dead","art","fly")
@@ -88,10 +95,12 @@ The chi-squared result shows that the p-value is extremely large (much larger th
 
 # 3 How deadly are sharks?
 
-### Question description: Now that you have the data, please help me sort out how U.S. sharks compare with Australian sharks. Explain your analysis in terms that are simple but technically correct, make sure to include an analysis of statistical power.
+#### Question description: Now that you have the data, please help me sort out how U.S. sharks compare with Australian sharks. Explain your analysis in terms that are simple but technically correct, make sure to include an analysis of statistical power.
 
 For this case, it is equivalent to this test:
+
 * H0: Sharks in Australia were, on average, are the same as the sharks in the United States.
+
 * H1: Sharks in Australia were, on average, are more vicious than the sharks in the United States.
 
 ```{r}
@@ -127,22 +136,106 @@ chisq.test(shark_ff)
 ```
 The result from chi-square test shows that p-value is smaller than 0.05, so H0 is rejected and the conclusion is that sharks in US are different from those in Australia. From empirical plot, we can see that sharks in US make attack more frequent.
 
+# 4 Power analysis
+#### Question description: In testing the parameter of a binomial distribution, the power to detect the diﬀerence between hypothetical parameters .65 and .45 is .48 while the power to detect the diﬀerence between hypothetical parameters .25 and .05 is .82, even though the diﬀerence between both pairs of values is .20. Explain the use of the arcsine transformation. How does it work? Why does it work?
+
+As in the book, the power to detect the difference between hypothetical parameters .65 and .45 is .48 while the power to detect the difference between hypothetical parameters .25 and .05 is .82, even though the difference between both pairs of values is .20, in which way the hypothetical parameters of the distribution doesn not provide a scale of equal units of detectability because 0.25 and 0.05 are at the edge of the distribution.
+
+After arcsine transformation transforming the proportional parameters to the scale of −π/2 to π/2. This can solve the problem of falling into the edge of the range.
+
+# 5 Estimators
+
+### Use the Method of Moments and MLE to ﬁnd estimators as described in these 3 cases.
+
+#### (1) Exponential Distribution
+
+ \[X_{1}, ..., X_{n}\] are independent draws from an exponential distribution, exp(λ). Find the MLE of λ.
+
+ \[f(x;\lambda)=\lambda e^{-\lambda x}\]
+
+\[L(\lambda;X_1,...,X_n)=\lambda e^{-\lambda X_1}\lambda e^{-\lambda X_2}...\lambda e^{-\lambda X_n}\]
+
+\[L(\lambda;X_1,...,X_n)=\lambda^ne^{-\lambda\sum X_i}\]
+
+\[l(\lambda;X_1,...,X_n)=nlog(\lambda)-\lambda \sum X_i\]
+
+\[\frac{dl(\lambda;X1,...,Xn)}{d\lambda}=\frac{n}{\lambda}-\sum X=0\]
+
+\[\hat\lambda=\frac{n}{\sum X_i}=\frac{1}{\bar X_n}\]
+
+#### (2) New Distribution
+
+\[f(x) =\left\{\begin{matrix} (1- \theta + 2\theta x ) & for 0<x <0\\ 0 & otherwise \end{matrix}\right.\]
+
+#### Find the method of moments estimator and MLE for θ.
+
+Method of moments estimator:
+\[\begin{align} E[X]\ & =\ \int^1_0 x((1-\theta)\ +\ 2\theta x)dx \notag \\ & =\ (1-\theta)\int^1_0 xdx +\ \int^1_0 2\theta x^2 dx \notag \\ & =\ (1-\theta)\frac{1}{2}x^2\arrowvert^1_0\ +\ 2\theta \frac{1}{3}x^3\arrowvert^1_0\ \notag \\ & =\ \frac{1}{2} -\ \frac{1}{2}\theta\ +\ \frac{2}{3}\theta \notag \\ & =\ \frac{1}{6}\theta+\frac{1}{2} \notag \end{align}\]
+
+MLE:
+\[L(\theta;X_1,...,X_n)=[(1-\theta)+2\theta X_1]...[(1-\theta)+2\theta X_n]\]
+
+\[l(\theta;X_1,...,X_n)=log[(1-\theta)+2\theta X_1]+...+log[(1-\theta)+2\theta X_1]\]
+
+Under this situation, it’s not possible to find the maximum by taking the derivatives. We need to find θ to maximize in the other ways.
+
+#### (3) Rain in Southern Illinois
+
+#### In their article that Changnon and Huff concluded that the gamma distribution was a good fit for their data. What other distributions might they have considered? Do you agree with Changnon and Huff? Why? Why not? Using the gamma distribution as your model, produce estimates of the parameters using both the method of moments and maximum likelihood. Use the bootstrap to estimate the variance of the estimates. Compare the estimates which estimates would you present? Why?
+
+```{r}
+#read the data
+data60 <- read.table("material/ill-60.txt", quote="\"", comment.char="")
+data60 <-as.numeric(as.array(data60 [,1]))
+data61 <- read.table("material/ill-61.txt", quote="\"", comment.char="")
+data61<-as.numeric(as.array(data61[,1]))
+data62 <- read.table("material/ill-62.txt", quote="\"", comment.char="")
+data62<-as.numeric(as.array(data62[,1]))
+data63<- read.table("material/ill-63.txt", quote="\"", comment.char="")
+data63<-as.numeric(as.array(data63[,1]))
+data64 <- read.table("material/ill-64.txt", quote="\"", comment.char="")
+data64<-as.numeric(as.array(data64[,1]))
+#plot
+plotdist(data60)
+plotdist(data61)
+plotdist(data62)
+plotdist(data63)
+plotdist(data64)
+
+sum(data60)
+sum(data61)
+sum(data62)
+sum(data63)
+sum(data64)
+```
+
+The pecipitation amount in 1961 is the highest due to the storm.
+
+```{r}
+#Test whether the gamma distribution was a good fit for their data.
+data_rain<-c(data60,data61,data62,data63,data64)
+plot(fitdist(data_rain, "gamma"))
+```
+
+From QQ-plot and PP-plot, it seems that gamma distribution is a good fit for the rain data. Therefore, Changnon and Huff is right.
+
+```{r}
+#Compare the results from MLE and MOM
+fmme <- fitdist(data_rain, "gamma",method = "mme")
+bmme <- bootdist(fmme)
+summary(bmme)
+
+```
 
 
+```{r}
+fmle <- fitdist(data_rain, "gamma",method = "mle")
+gmle <- bootdist(fmle)
+summary(fmle)
 
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
+The 95% confidence interval bootstrap MME result is (0.28,0.53) and the rate is (1.17,2.62), while the the 95% confidence interval bootstrap MLE result is (0.38,0.51), and the rate is (1.57,2.59). Therefore, we will choose MLE as the estimator.
 
 
 
